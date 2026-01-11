@@ -28,6 +28,13 @@ import {
   getOpenInterest,
   getLiveVolumeSchema,
   getLiveVolume,
+  // WebSocket tools
+  wsSubscribePricesSchema,
+  wsSubscribePrices,
+  wsSubscribeTradesSchema,
+  wsSubscribeTrades,
+  wsGetOrderbookSchema,
+  wsGetOrderbook,
 } from './tools/index.js';
 
 // Create MCP server
@@ -265,6 +272,67 @@ server.tool(
     try {
       const input = getLiveVolumeSchema.parse(params);
       const result = await getLiveVolume(input);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: error instanceof Error ? error.message : 'Unknown error' }],
+      };
+    }
+  }
+);
+
+// WebSocket tools
+server.tool(
+  'ws_subscribe_prices',
+  'Subscribe to real-time price updates for Polymarket assets via WebSocket. Collects price changes for specified duration.',
+  wsSubscribePricesSchema.shape,
+  async (params) => {
+    try {
+      const input = wsSubscribePricesSchema.parse(params);
+      const result = await wsSubscribePrices(input);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: error instanceof Error ? error.message : 'Unknown error' }],
+      };
+    }
+  }
+);
+
+server.tool(
+  'ws_subscribe_trades',
+  'Subscribe to real-time trade updates for Polymarket assets via WebSocket. Collects trades for specified duration.',
+  wsSubscribeTradesSchema.shape,
+  async (params) => {
+    try {
+      const input = wsSubscribeTradesSchema.parse(params);
+      const result = await wsSubscribeTrades(input);
+      return {
+        content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        content: [{ type: 'text', text: error instanceof Error ? error.message : 'Unknown error' }],
+      };
+    }
+  }
+);
+
+server.tool(
+  'ws_get_orderbook',
+  'Get live orderbook snapshot for a Polymarket asset via WebSocket. Returns current bids and asks.',
+  wsGetOrderbookSchema.shape,
+  async (params) => {
+    try {
+      const input = wsGetOrderbookSchema.parse(params);
+      const result = await wsGetOrderbook(input);
       return {
         content: [{ type: 'text', text: JSON.stringify(result, null, 2) }],
       };

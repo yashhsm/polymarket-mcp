@@ -10,3 +10,8 @@ export * from './get-trades-by-wallet.js';
 export * from './get-top-holders.js';
 export * from './get-open-interest.js';
 export * from './get-live-volume.js';
+
+// WebSocket tools
+export * from './ws-subscribe-prices.js';
+export * from './ws-subscribe-trades.js';
+export * from './ws-get-orderbook.js';
