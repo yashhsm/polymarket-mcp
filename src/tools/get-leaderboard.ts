@@ -4,7 +4,7 @@ import { POLYMARKET_ENDPOINTS } from '../constants.js';
 export const getLeaderboardSchema = z.object({
   category: z.enum(['OVERALL', 'POLITICS', 'SPORTS', 'CRYPTO', 'POP_CULTURE']).optional().describe('Leaderboard category'),
   timePeriod: z.enum(['DAY', 'WEEK', 'MONTH', 'ALL']).optional().describe('Time period for rankings'),
-  orderBy: z.enum(['PNL', 'VOLUME']).optional().describe('Order by PNL or volume'),
+  orderBy: z.enum(['PNL', 'VOL']).optional().describe('Order by PNL or volume'),
   limit: z.number().optional().describe('Number of results (1-50)'),
   offset: z.number().optional().describe('Pagination offset (0-1000)'),
   user: z.string().optional().describe('Filter by user address'),
